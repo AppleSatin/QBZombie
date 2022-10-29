@@ -28,6 +28,6 @@ RegisterNetEvent('SeatShuffle', function()
 	end
 end)
 
-RegisterCommand("shuff", function()
+RegisterCommand("shuff", function(source, args, raw)
     TriggerEvent("SeatShuffle")
 end, false)

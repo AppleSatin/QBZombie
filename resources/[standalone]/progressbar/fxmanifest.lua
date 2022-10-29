@@ -4,7 +4,7 @@ game 'gta5'
 description 'progressbar'
 version '1.0.0'
 
-ui_page('html/index.html') 
+ui_page('html/index.html')
 
 client_scripts {
     'client/main.lua',
@@ -19,9 +19,5 @@ files {
     'html/js/jquery.min.js',
 }
 
-exports {
-    'Progress',
-    'ProgressWithStartEvent',
-    'ProgressWithTickEvent',
-    'ProgressWithStartAndTick'
-}
+
+lua54 'yes'

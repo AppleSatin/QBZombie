@@ -10,9 +10,9 @@ CreateThread(function()
     end
 end)
 
-AddEventHandler("populationPedCreating", function(x, y, z)
+AddEventHandler("populationPedCreating", function(x, y, z, model)
 	Wait(500)	-- Give the entity some time to be created
-	local _, handle = GetClosestPed(x, y, z, 1.0) -- Get the entity handle
+	local found, handle = GetClosestPed(x, y, z, 1.0) -- Get the entity handle
 	SetPedDropsWeaponsWhenDead(handle, false)
 end)
 
@@ -23,7 +23,6 @@ CreateThread(function() -- all these should only need to be called once
 	SetCreateRandomCops(false)
 	SetCreateRandomCopsNotOnScenarios(false)
 	SetCreateRandomCopsOnScenarios(false)
-	DistantCopCarSirens(false)
 	RemoveVehiclesFromGeneratorsInArea(335.2616 - 300.0, -1432.455 - 300.0, 46.51 - 300.0, 335.2616 + 300.0, -1432.455 + 300.0, 46.51 + 300.0) -- central los santos medical center
 	RemoveVehiclesFromGeneratorsInArea(441.8465 - 500.0, -987.99 - 500.0, 30.68 -500.0, 441.8465 + 500.0, -987.99 + 500.0, 30.68 + 500.0) -- police station mission row
 	RemoveVehiclesFromGeneratorsInArea(316.79 - 300.0, -592.36 - 300.0, 43.28 - 300.0, 316.79 + 300.0, -592.36 + 300.0, 43.28 + 300.0) -- pillbox
@@ -34,6 +33,13 @@ CreateThread(function() -- all these should only need to be called once
 	RemoveVehiclesFromGeneratorsInArea(-724.46 - 300.0, -1444.03 - 300.0, 5.0 - 300.0, -724.46 + 300.0, -1444.03 + 300.0, 5.0 + 300.0) -- REMOVE CHOPPERS WOW
 end)
 
+
+Citizen.CreateThread(function()
+    while true do
+        DistantCopCarSirens(false) -- Setting to false will disable the distant sirens
+        Citizen.Wait(400)
+    end
+end)
 
 CreateThread(function()
 	while true do
@@ -57,7 +63,7 @@ CreateThread(function()
 end)
 
 if Config.IdleCamera then --Disable Idle Cinamatic Cam
-	DisableIdleCamera(true)
+  	DisableIdleCamera(true)
 end
 
 CreateThread(function()
@@ -86,7 +92,7 @@ end)
 
 CreateThread(function()
     local pedPool = GetGamePool('CPed')
-    for _, v in pairs(pedPool) do
+    for k,v in pairs(pedPool) do
         SetPedDropsWeaponsWhenDead(v, false)
     end
     Wait(500)

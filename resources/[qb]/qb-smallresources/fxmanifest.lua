@@ -17,4 +17,8 @@ files {
 	'relationships.dat'
 }
 
+exports {
+	'HasHarness'
+}
+
 lua54 'yes'

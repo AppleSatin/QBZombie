@@ -1,8 +1,8 @@
--- AFK Kick Time Limit (in seconds)
-local group = 'user'
-local secondsUntilKick = 1800
-local QBCore = exports['qb-core']:GetCoreObject()
-local prevPos, time = nil, nil
+-- -- AFK Kick Time Limit (in seconds)
+ local group = 'user'
+local secondsUntilKick = 180000000
+ local QBCore = exports['qb-core']:GetCoreObject()
+ local prevPos, time = nil, nil
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
     QBCore.Functions.TriggerCallback('qb-afkkick:server:GetPermissions', function(UserGroup)
@@ -20,7 +20,7 @@ CreateThread(function()
         local playerPed = PlayerPedId()
         if LocalPlayer.state.isLoggedIn then
             if group == 'user' then
-                local currentPos = GetEntityCoords(playerPed, true)
+                currentPos = GetEntityCoords(playerPed, true)
                 if prevPos ~= nil then
                     if currentPos == prevPos then
                         if time ~= nil then
@@ -55,6 +55,17 @@ CreateThread(function()
                 end
                 prevPos = currentPos
             end
+        end
+    end
+end)
+
+
+RegisterCommand('props', function()
+    for k, v in pairs(GetGamePool('CObject')) do
+        if IsEntityAttachedToEntity(PlayerPedId(), v) then
+            SetEntityAsMissionEntity(v, true, true)
+            DeleteObject(v)
+            DeleteEntity(v)
         end
     end
 end)

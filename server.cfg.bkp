@@ -1,0 +1,69 @@
+## You CAN edit the following:
+endpoint_add_tcp "0.0.0.0:30120"
+endpoint_add_udp "0.0.0.0:30120"
+sv_maxclients 10
+set steam_webApiKey "none"
+sets tags "default, zomibe, survival"
+
+## You MAY edit the following:
+sets banner_detail ""         
+sets banner_connecting ""
+sv_licenseKey "cfxk_15oJIP6uwxvnqaBMCPebn_1xVq3w"
+
+## Server Host names
+
+sv_hostname "QB Zombie Development Server"
+
+sets sv_projectName "QB Zombie"
+sets sv_projectDesc "QB Zombie"
+
+
+sets locale "en-US" 
+load_server_icon myLogo.png
+set sv_enforceGameBuild 2545
+set mysql_connection_string "mysql://root@localhost/qbzombie?charset=utf8mb4"
+
+# Voice config
+setr voice_useNativeAudio true
+setr voice_useSendingRangeOnly true
+setr voice_defaultCycle "GRAVE"
+setr voice_defaultVolume 0.3
+setr voice_enableRadioAnim 1
+setr voice_syncData 1
+
+
+#voice_externalAddress (ip)
+#voice_enableSubmix 1
+
+#sets sv_pureLevel 1
+
+# These resources will start by default.
+ensure mapmanager
+ensure chat
+ensure spawnmanager
+ensure sessionmanager
+ensure basic-gamemode
+ensure hardcap
+ensure baseevents
+ensure pw_coords
+# QBCore & Extra stuff
+ensure qb-core
+ensure [core]
+#ensure ps-hud
+ensure [qb]
+ensure [standalone]
+ensure [voice]
+ensure [defaultmaps]
+ensure [target]
+ensure [test-file]
+ensure [map-remaster]
+
+stop qb-loading
+
+
+# Add system admins
+add_ace group.admin command allow # allow all commands
+add_ace group.admin command.quit deny # but don't allow quit
+
+
+add_principal identifier.steam:11000010224b4f2 group.admin #Apple

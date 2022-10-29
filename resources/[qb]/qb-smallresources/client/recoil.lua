@@ -27,7 +27,7 @@ local recoils = {
 	[453432689] = 0.3,			--['weapon_pistol']
 	[-1075685676] = 0.5,		--['weapon_pistol_mk2']
 	[1593441988] = 0.2,			--['weapon_combatpistol']
-	[584646201] = 0.3,			--['weapon_appistol']
+	[584646201] = 0.0,			--['weapon_appistol']
 	[911657153] = 0.1,			--['weapon_stungun']
 	[-1716589765] = 0.6,		--['weapon_pistol50']
 	[-1076751822] = 0.2,		--['weapon_snspistol']
@@ -50,7 +50,7 @@ local recoils = {
 	[2024373456] = 0.1,			--['weapon_smg_mk2']
 	[-270015777] = 0.1,			--['weapon_assaultsmg']
 	[171789620] = 0.2,			--['weapon_combatpdw']
-	[-619010992] = 0.3,			--['weapon_machinepistol']
+	[-619010992] = 0.0,			--['weapon_machinepistol']
 	[-1121678507] = 0.1,		--['weapon_minismg']
 	[1198256469] = 0.3,			--['weapon_raycarbine']
 
@@ -67,12 +67,12 @@ local recoils = {
 	[94989220] = 0.0,			--['weapon_combatshotgun']
 
 	-- Assault Rifles
-	[-1074790547] = 0.5,		--['weapon_assaultrifle']
+	[-1074790547] = 0.2,		--['weapon_assaultrifle']
 	[961495388] = 0.2,			--['weapon_assaultrifle_mk2']
-	[-2084633992] = 0.3,		--['weapon_carbinerifle']
-	[-86904375] = 0.1,			--['weapon_carbinerifle_mk2']
+	[-2084633992] = 0.2,		--['weapon_carbinerifle']
+	[-86904375] = 0.0,			--['weapon_carbinerifle_mk2']
 	[-1357824103] = 0.1,		--['weapon_advancedrifle']
-	[-1063057011] = 0.2,		--['weapon_specialcarbine']
+	[-1063057011] = 0.3,		--['weapon_specialcarbine']
 	[2132975508] = 0.2,			--['weapon_bullpuprifle']
 	[1649403952] = 0.3,			--['weapon_compactrifle']
 	[-1768145561] = 0.2,		--['weapon_specialcarbine_mk2']
@@ -80,7 +80,7 @@ local recoils = {
 	[-1658906650] = 0.0,		--['weapon_militaryrifle']
 
 	-- Light Machine Guns
-	[-1660422300] = 0.1,		--['weapon_mg']
+	[-1660422300] = 0.0,		--['weapon_mg']
 	[2144741730] = 0.1,			--['weapon_combatmg']
 	[1627465347] = 0.1,			--['weapon_gusenberg']
 	[-608341376] = 0.1,			--['weapon_combatmg_mk2']
@@ -120,6 +120,26 @@ local recoils = {
 	-- [883325847] = 0.3,		--['weapon_petrolcan']
 	-- [101631238] = 0.3,		--['weapon_fireextinguisher']
 	-- [-1168940174] = 0.3,		--['weapon_hazardcan']
+		-- CUSTOM WEAPONS
+		[GetHashKey("weapon_ak47")] = 0.5,
+		[GetHashKey("weapon_de")] = 0.5,
+		[GetHashKey("weapon_fnx45")] = 0.3,
+		[GetHashKey("weapon_glock17")] = 0.3,
+		[GetHashKey("weapon_m4")] = 0.3,
+		[GetHashKey("weapon_hk416")] = 0.3,
+		[GetHashKey("weapon_mk14")] = 0.4,
+		[GetHashKey("weapon_m110")] = 0.4,
+		[GetHashKey("weapon_huntingrifle")] = 0.4,
+		[GetHashKey("weapon_ar15")] = 0.4,
+		[GetHashKey("weapon_m9")] = 0.4,
+		[GetHashKey("weapon_m70")] = 0.5,
+		[GetHashKey("weapon_m1911")] = 0.4,
+		[GetHashKey("weapon_mac10")] = 0.7,
+		[GetHashKey("weapon_uzi")] = 0.7,
+		[GetHashKey("weapon_mp9")] = 0.7,
+		[GetHashKey("weapon_mossberg")] = 0.7,
+		[GetHashKey("weapon_remington")] = 0.7,
+		[GetHashKey("weapon_scarh")] = 0.5,
 }
 
 CreateThread(function()
@@ -129,18 +149,18 @@ CreateThread(function()
 			local _,wep = GetCurrentPedWeapon(ped)
 			_,cAmmo = GetAmmoInClip(ped, wep)
 			if recoils[wep] and recoils[wep] ~= 0 then
-				local tv = 0
+				tv = 0
 				if GetFollowPedCamViewMode() ~= 4 then
-					repeat
+					repeat 
 						Wait(0)
-						local p = GetGameplayCamRelativePitch()
+						p = GetGameplayCamRelativePitch()
 						SetGameplayCamRelativePitch(p+0.1, 0.2)
 						tv = tv+0.1
 					until tv >= recoils[wep]
 				else
-					repeat
+					repeat 
 						Wait(0)
-						local p = GetGameplayCamRelativePitch()
+						p = GetGameplayCamRelativePitch()
 						if recoils[wep] > 0.1 then
 							SetGameplayCamRelativePitch(p+0.6, 1.2)
 							tv = tv+0.6

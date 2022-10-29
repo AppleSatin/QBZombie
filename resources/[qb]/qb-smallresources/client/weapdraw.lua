@@ -70,6 +70,29 @@ local weapons = {
 	'WEAPON_COMPACTLAUNCHER',
 	'WEAPON_PIPEBOMB',
 	'WEAPON_DOUBLEACTION',
+		--Custom Weapon
+		'WEAPON_AK47',
+		'WEAPON_M9',
+		'WEAPON_FNX45',
+		'WEAPON_DE',
+		'WEAPON_GLOCK17',
+		'WEAPON_M4',
+		'WEAPON_HK416',
+		'WEAPON_MK14',
+		'WEAPON_HUNTINGRIFLE',
+		'WEAPON_AR15',
+		'WEAPON_M70',
+		'WEAPON_M1911',
+		'WEAPON_MAC10',
+		'WEAPON_UZI',
+		'WEAPON_MP9',
+		'WEAPON_M110',
+		'WEAPON_MOSSBERG',
+		'WEAPON_REMINGTON',
+		'WEAPON_SCARH',
+		'WEAPON_SHIV',
+		'WEAPON_KATANA',
+		'WEAPON_SLEDGEHAMMER',
 }
 
 -- Wheapons that require the Police holster animation
@@ -83,7 +106,14 @@ local holsterableWeapons = {
 	'WEAPON_REVOLVER',
 	'WEAPON_SNSPISTOL',
 	'WEAPON_HEAVYPISTOL',
-	'WEAPON_VINTAGEPISTOL'
+	'WEAPON_VINTAGEPISTOL',
+		--'WEAPON_STUNGUN',
+	--Custom Weapon
+	'WEAPON_DE',
+	'WEAPON_GLOCK17',
+	'WEAPON_M9',
+	'WEAPON_M1911',
+	'WEAPON_FNX45'
 }
 
 local holstered = true
@@ -108,7 +138,7 @@ CreateThread(function()
 		if DoesEntityExist(ped) and not IsEntityDead(ped) and not IsPedInParachuteFreeFall(ped) and not IsPedFalling(ped) and (GetPedParachuteState(ped) == -1 or GetPedParachuteState(ped) == 0) then
 			if currWeapon ~= GetSelectedPedWeapon(ped) then
 				pos = GetEntityCoords(ped, true)
-				local rot = GetEntityHeading(ped)
+				rot = GetEntityHeading(ped)
 
 				local newWeap = GetSelectedPedWeapon(ped)
 				SetCurrentPedWeapon(ped, currWeapon, true)
@@ -117,7 +147,7 @@ CreateThread(function()
 				loadAnimDict("rcmjosh4")
 				loadAnimDict("weapons@pistol@")
 
-				local HolsterVariant = GetPedDrawableVariation(ped, 7)
+				HolsterVariant = GetPedDrawableVariation(ped, 7)
 				if HolsterVariant == 8 then
 					WearingHolster = true
 				elseif HolsterVariant == 1 then

@@ -3,7 +3,7 @@
 CreateThread(function()
     while true do
         -- This is the Application ID (Replace this with you own)
-	SetDiscordAppId()
+	SetDiscordAppId(954097970792530061)
 
         -- Here you will have to put the image name for the "large" icon.
 	SetDiscordRichPresenceAsset('logo_name')
@@ -20,7 +20,7 @@ CreateThread(function()
         SetDiscordRichPresenceAssetSmallText('This is a lsmall icon with text')
 
         QBCore.Functions.TriggerCallback('smallresources:server:GetCurrentPlayers', function(result)
-            SetRichPresence('Players: '..result..'/64')
+            SetRichPresence('Players: '..result..'/100')
         end)
 
         -- (26-02-2021) New Native:
@@ -30,8 +30,8 @@ CreateThread(function()
             First paramater is the button index (0 or 1), second is the title and 
             last is the url (this has to start with "fivem://connect/" or "https://") 
         ]]--
-        SetDiscordRichPresenceAction(0, "First Button!", "fivem://connect/localhost:30120")
-        SetDiscordRichPresenceAction(1, "Second Button!", "fivem://connect/localhost:30120")
+        SetDiscordRichPresenceAction(0, "Connect", "fivem://connect cfx.re/join/7x9mja")
+        -- SetDiscordRichPresenceAction(1, "Second Button!", "fivem://connect/localhost:30120")
 
         -- It updates every minute just in case.
 	Wait(60000)
