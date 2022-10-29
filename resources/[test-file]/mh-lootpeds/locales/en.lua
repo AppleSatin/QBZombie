@@ -6,7 +6,7 @@ local Translations = {
         ['stop'] = "Stop",
     },
     target = {
-        ['label'] = "Loot this ped",
+        ['label'] = "Loot Dead Zombie",
     },
     command = {
         ["start_stop"] = "%{state} Ped Looting",

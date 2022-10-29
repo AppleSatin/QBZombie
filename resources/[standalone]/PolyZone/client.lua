@@ -1,9 +1,9 @@
 eventPrefix = '__PolyZone__:'
 PolyZone = {}
 
-local defaultColorWalls = {0, 255, 0}
+local defaultColorWalls = {0, 0, 255}
 local defaultColorOutline = {255, 0, 0}
-local defaultColorGrid = {255, 255, 255}
+local defaultColorGrid = {0, 0, 255}
 
 -- Utility functions
 local abs = math.abs

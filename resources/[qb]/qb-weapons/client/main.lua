@@ -150,118 +150,118 @@ CreateThread(function()
     end
 end)
 
-CreateThread(function()
-    while true do
-        if LocalPlayer.state.isLoggedIn then
-            local ped = PlayerPedId()
-            if CurrentWeaponData and next(CurrentWeaponData) then
-                if IsPedShooting(ped) or IsControlJustPressed(0, 24) then
-                    local weapon = GetSelectedPedWeapon(ped)
-                    if CanShoot then
-                        if weapon and weapon ~= 0 and QBCore.Shared.Weapons[weapon] then
-                            local ammo = GetAmmoInPedWeapon(ped, weapon)
-                            if QBCore.Shared.Weapons[weapon]["name"] == "weapon_snowball" then
-                                TriggerServerEvent('QBCore:Server:RemoveItem', "snowball", 1)
-                            elseif QBCore.Shared.Weapons[weapon]["name"] == "weapon_pipebomb" then
-                                TriggerServerEvent('QBCore:Server:RemoveItem', "weapon_pipebomb", 1)
-                            elseif QBCore.Shared.Weapons[weapon]["name"] == "weapon_molotov" then
-                                TriggerServerEvent('QBCore:Server:RemoveItem', "weapon_molotov", 1)
-                            elseif QBCore.Shared.Weapons[weapon]["name"] == "weapon_stickybomb" then
-                                TriggerServerEvent('QBCore:Server:RemoveItem', "weapon_stickybomb", 1)
-                            elseif QBCore.Shared.Weapons[weapon]["name"] == "weapon_grenade" then
-                                TriggerServerEvent('QBCore:Server:RemoveItem', "weapon_grenade", 1)
-                            elseif QBCore.Shared.Weapons[weapon]["name"] == "weapon_bzgas" then
-                                TriggerServerEvent('QBCore:Server:RemoveItem', "weapon_bzgas", 1)
-                            elseif QBCore.Shared.Weapons[weapon]["name"] == "weapon_proxmine" then
-                                TriggerServerEvent('QBCore:Server:RemoveItem', "weapon_proxmine", 1)
-                            elseif QBCore.Shared.Weapons[weapon]["name"] == "weapon_ball" then
-                                TriggerServerEvent('QBCore:Server:RemoveItem', "weapon_ball", 1)
-                            elseif QBCore.Shared.Weapons[weapon]["name"] == "weapon_smokegrenade" then
-                                TriggerServerEvent('QBCore:Server:RemoveItem', "weapon_smokegrenade", 1)
-                            elseif QBCore.Shared.Weapons[weapon]["name"] == "weapon_flare" then
-                                TriggerServerEvent('QBCore:Server:RemoveItem', "weapon_flare", 1)
-                            else
-                                if ammo > 0 then
-                                    MultiplierAmount = MultiplierAmount + 1
-                                end
-                            end
-                        end
-                    else
-                        if weapon ~= -1569615261 then
-                            TriggerEvent('inventory:client:CheckWeapon', QBCore.Shared.Weapons[weapon]["name"])
-                            QBCore.Functions.Notify(Lang:t('error.weapon_broken'), "error")
-                            MultiplierAmount = 0
-                        end
-                    end
-                end
-            end
-        end
-        Wait(1)
-    end
-end)
+-- CreateThread(function()
+--     while true do
+--         if LocalPlayer.state.isLoggedIn then
+--             local ped = PlayerPedId()
+--             if CurrentWeaponData and next(CurrentWeaponData) then
+--                 if IsPedShooting(ped) or IsControlJustPressed(0, 24) then
+--                     local weapon = GetSelectedPedWeapon(ped)
+--                     if CanShoot then
+--                         if weapon and weapon ~= 0 and QBCore.Shared.Weapons[weapon] then
+--                             local ammo = GetAmmoInPedWeapon(ped, weapon)
+--                             if QBCore.Shared.Weapons[weapon]["name"] == "weapon_snowball" then
+--                                 TriggerServerEvent('QBCore:Server:RemoveItem', "snowball", 1)
+--                             elseif QBCore.Shared.Weapons[weapon]["name"] == "weapon_pipebomb" then
+--                                 TriggerServerEvent('QBCore:Server:RemoveItem', "weapon_pipebomb", 1)
+--                             elseif QBCore.Shared.Weapons[weapon]["name"] == "weapon_molotov" then
+--                                 TriggerServerEvent('QBCore:Server:RemoveItem', "weapon_molotov", 1)
+--                             elseif QBCore.Shared.Weapons[weapon]["name"] == "weapon_stickybomb" then
+--                                 TriggerServerEvent('QBCore:Server:RemoveItem', "weapon_stickybomb", 1)
+--                             elseif QBCore.Shared.Weapons[weapon]["name"] == "weapon_grenade" then
+--                                 TriggerServerEvent('QBCore:Server:RemoveItem', "weapon_grenade", 1)
+--                             elseif QBCore.Shared.Weapons[weapon]["name"] == "weapon_bzgas" then
+--                                 TriggerServerEvent('QBCore:Server:RemoveItem', "weapon_bzgas", 1)
+--                             elseif QBCore.Shared.Weapons[weapon]["name"] == "weapon_proxmine" then
+--                                 TriggerServerEvent('QBCore:Server:RemoveItem', "weapon_proxmine", 1)
+--                             elseif QBCore.Shared.Weapons[weapon]["name"] == "weapon_ball" then
+--                                 TriggerServerEvent('QBCore:Server:RemoveItem', "weapon_ball", 1)
+--                             elseif QBCore.Shared.Weapons[weapon]["name"] == "weapon_smokegrenade" then
+--                                 TriggerServerEvent('QBCore:Server:RemoveItem', "weapon_smokegrenade", 1)
+--                             elseif QBCore.Shared.Weapons[weapon]["name"] == "weapon_flare" then
+--                                 TriggerServerEvent('QBCore:Server:RemoveItem', "weapon_flare", 1)
+--                             else
+--                                 if ammo > 0 then
+--                                     MultiplierAmount = MultiplierAmount + 1
+--                                 end
+--                             end
+--                         end
+--                     else
+--                         if weapon ~= -1569615261 then
+--                             TriggerEvent('inventory:client:CheckWeapon', QBCore.Shared.Weapons[weapon]["name"])
+--                             QBCore.Functions.Notify(Lang:t('error.weapon_broken'), "error")
+--                             MultiplierAmount = 0
+--                         end
+--                     end
+--                 end
+--             end
+--         end
+--         Wait(1)
+--     end
+-- end)
 
-CreateThread(function()
-    while true do
-        if LocalPlayer.state.isLoggedIn then
-            local inRange = false
-            local ped = PlayerPedId()
-            local pos = GetEntityCoords(ped)
-            for k, data in pairs(Config.WeaponRepairPoints) do
-                local distance = #(pos - data.coords)
-                if distance < 10 then
-                    inRange = true
-                    if distance < 1 then
-                        if data.IsRepairing then
-                            if data.RepairingData.CitizenId ~= PlayerData.citizenid then
-                                DrawText3Ds(data.coords.x, data.coords.y, data.coords.z, Lang:t('info.repairshop_not_usable'))
-                            else
-                                if not data.RepairingData.Ready then
-                                    DrawText3Ds(data.coords.x, data.coords.y, data.coords.z, Lang:t('info.weapon_will_repair'))
-                                else
-                                    DrawText3Ds(data.coords.x, data.coords.y, data.coords.z, Lang:t('info.take_weapon_back'))
-                                end
-                            end
-                        else
-                            if CurrentWeaponData and next(CurrentWeaponData) then
-                                if not data.RepairingData.Ready then
-                                    local WeaponData = QBCore.Shared.Weapons[GetHashKey(CurrentWeaponData.name)]
-                                    local WeaponClass = (QBCore.Shared.SplitStr(WeaponData.ammotype, "_")[2]):lower()
-                                    DrawText3Ds(data.coords.x, data.coords.y, data.coords.z, Lang:t('info.repair_weapon_price', { value = Config.WeaponRepairCosts[WeaponClass] }))
-                                    if IsControlJustPressed(0, 38) then
-                                        QBCore.Functions.TriggerCallback('weapons:server:RepairWeapon', function(HasMoney)
-                                            if HasMoney then
-                                                CurrentWeaponData = {}
-                                            end
-                                        end, k, CurrentWeaponData)
-                                    end
-                                else
-                                    if data.RepairingData.CitizenId ~= PlayerData.citizenid then
-                                        DrawText3Ds(data.coords.x, data.coords.y, data.coords.z, Lang:t('info.repairshop_not_usable'))
-                                    else
-                                        DrawText3Ds(data.coords.x, data.coords.y, data.coords.z, Lang:t('info.take_weapon_back'))
-                                        if IsControlJustPressed(0, 38) then
-                                            TriggerServerEvent('weapons:server:TakeBackWeapon', k, data)
-                                        end
-                                    end
-                                end
-                            else
-                                if data.RepairingData.CitizenId == nil then
-                                    DrawText3Ds(data.coords.x, data.coords.y, data.coords.z, Lang:t('error.no_weapon_in_hand'))
-                                elseif data.RepairingData.CitizenId == PlayerData.citizenid then
-                                    DrawText3Ds(data.coords.x, data.coords.y, data.coords.z, Lang:t('info.take_weapon_back'))
-                                    if IsControlJustPressed(0, 38) then
-                                        TriggerServerEvent('weapons:server:TakeBackWeapon', k, data)
-                                    end
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-            if not inRange then
-                Wait(1000)
-            end
-        end
-        Wait(3)
-    end
-end)
+-- CreateThread(function()
+--     while true do
+--         if LocalPlayer.state.isLoggedIn then
+--             local inRange = false
+--             local ped = PlayerPedId()
+--             local pos = GetEntityCoords(ped)
+--             for k, data in pairs(Config.WeaponRepairPoints) do
+--                 local distance = #(pos - data.coords)
+--                 if distance < 10 then
+--                     inRange = true
+--                     if distance < 1 then
+--                         if data.IsRepairing then
+--                             if data.RepairingData.CitizenId ~= PlayerData.citizenid then
+--                                 DrawText3Ds(data.coords.x, data.coords.y, data.coords.z, Lang:t('info.repairshop_not_usable'))
+--                             else
+--                                 if not data.RepairingData.Ready then
+--                                     DrawText3Ds(data.coords.x, data.coords.y, data.coords.z, Lang:t('info.weapon_will_repair'))
+--                                 else
+--                                     DrawText3Ds(data.coords.x, data.coords.y, data.coords.z, Lang:t('info.take_weapon_back'))
+--                                 end
+--                             end
+--                         else
+--                             if CurrentWeaponData and next(CurrentWeaponData) then
+--                                 if not data.RepairingData.Ready then
+--                                     local WeaponData = QBCore.Shared.Weapons[GetHashKey(CurrentWeaponData.name)]
+--                                     local WeaponClass = (QBCore.Shared.SplitStr(WeaponData.ammotype, "_")[2]):lower()
+--                                     DrawText3Ds(data.coords.x, data.coords.y, data.coords.z, Lang:t('info.repair_weapon_price', { value = Config.WeaponRepairCosts[WeaponClass] }))
+--                                     if IsControlJustPressed(0, 38) then
+--                                         QBCore.Functions.TriggerCallback('weapons:server:RepairWeapon', function(HasMoney)
+--                                             if HasMoney then
+--                                                 CurrentWeaponData = {}
+--                                             end
+--                                         end, k, CurrentWeaponData)
+--                                     end
+--                                 else
+--                                     if data.RepairingData.CitizenId ~= PlayerData.citizenid then
+--                                         DrawText3Ds(data.coords.x, data.coords.y, data.coords.z, Lang:t('info.repairshop_not_usable'))
+--                                     else
+--                                         DrawText3Ds(data.coords.x, data.coords.y, data.coords.z, Lang:t('info.take_weapon_back'))
+--                                         if IsControlJustPressed(0, 38) then
+--                                             TriggerServerEvent('weapons:server:TakeBackWeapon', k, data)
+--                                         end
+--                                     end
+--                                 end
+--                             else
+--                                 if data.RepairingData.CitizenId == nil then
+--                                     DrawText3Ds(data.coords.x, data.coords.y, data.coords.z, Lang:t('error.no_weapon_in_hand'))
+--                                 elseif data.RepairingData.CitizenId == PlayerData.citizenid then
+--                                     DrawText3Ds(data.coords.x, data.coords.y, data.coords.z, Lang:t('info.take_weapon_back'))
+--                                     if IsControlJustPressed(0, 38) then
+--                                         TriggerServerEvent('weapons:server:TakeBackWeapon', k, data)
+--                                     end
+--                                 end
+--                             end
+--                         end
+--                     end
+--                 end
+--             end
+--             if not inRange then
+--                 Wait(1000)
+--             end
+--         end
+--         Wait(3)
+--     end
+-- end)

@@ -58,8 +58,6 @@ ensure [target]
 ensure [test-file]
 ensure [map-remaster]
 
-stop qb-loading
-
 
 # Add system admins
 add_ace group.admin command allow # allow all commands

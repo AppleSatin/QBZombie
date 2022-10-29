@@ -251,8 +251,170 @@ RegisterNetEvent('consumables:client:Drink', function(itemName)
     end)
 end)
 
+
+
+function Buzzed()
+    -- print("buzzed")
+    local PlayerPed = PlayerPedId()
+    SetPedMovementClipset(
+        PlayerPedId(), 
+        "MOVE_M@DRUNK@SLIGHTLYDRUNK",
+        1.0
+    )
+    
+    ShakeGameplayCam('SMALL_EXPLOSION_SHAKE', 0.10)
+
+
+    TriggerServerEvent('hud:server:RelieveStress', 10)
+    QBCore.Functions.Notify("Feeling Buzzed..", "error", 7000)
+end
+
+function Drunk()
+    -- print("drunk")
+    local PlayerPed = PlayerPedId()
+    SetPedMovementClipset(
+        PlayerPedId(), 
+        "move_m@drunk@moderatedrunk", 
+        1.0
+    )
+    
+    ShakeGameplayCam('SMALL_EXPLOSION_SHAKE', 0.30)
+    SetPedMotionBlur(PlayerPed, true)
+	SetPedIsDrunk(PlayerPed, true)
+
+    TriggerServerEvent('hud:server:RelieveStress', 20)
+    QBCore.Functions.Notify("Definitely Drunk...", "error", 7000)
+end
+function Hammered()
+    -- print("hammered")
+    local PlayerPed = PlayerPedId()
+
+    SetPedMovementClipset(
+        PlayerPedId(), 
+        "move_m@drunk@verydrunk", 
+        1.0
+    )   
+
+    ShakeGameplayCam('SMALL_EXPLOSION_SHAKE', 0.80)
+	ShakeGameplayCam("DRUNK_SHAKE", 1.00)
+	SetPedMotionBlur(PlayerPed, true)
+	SetPedIsDrunk(PlayerPed, true)
+    --AlienEffect()
+    --setPlayerDrunk(anim, shake)
+    TriggerServerEvent('hud:server:RelieveStress', 30)
+    TriggerEvent("consumables:GetDrunk")
+    QBCore.Functions.Notify("Your Shit Faced!", "error", 8000)
+    QBCore.Functions.Notify("You probably should not drive..", "error", 8000)
+end
+
+function fuckDrunkDriver()
+
+	math.randomseed(GetGameTimer())
+	
+	local shitFuckDamn = math.random(1, #Config.RandomVehicleInteraction)
+	return Config.RandomVehicleInteraction[shitFuckDamn]
+end
+
+function setPlayerDrunk(anim, shake)
+	local PlayerPed = PlayerPedId()
+
+	RequestAnimSet(anim)
+      
+	while not HasAnimSetLoaded(anim) do
+		Citizen.Wait(100)
+	end
+
+	SetPedMovementClipset(PlayerPed, anim, true)
+	ShakeGameplayCam("DRUNK_SHAKE", shake)
+	SetPedMotionBlur(PlayerPed, true)
+	SetPedIsDrunk(PlayerPed, true)
+
+end
+
+local drunkDriving 	 		 = false
+local level					 = -1
+local drunk					 = false
+local timing				 = false
+
+RegisterNetEvent('consumables:GetDrunk', function()
+	if not drunk then
+		drunk = true
+		timer()
+		Citizen.CreateThread(function()
+			local PlayerPed = PlayerPedId()
+			drunkDriving = true 
+
+			while drunkDriving do
+				Citizen.Wait(Config.Fuckage) -- How often you want to fuck with the driver
+				if IsPedInAnyVehicle(PlayerPed, false) or IsPedInAnyVehicle(PlayerPed, false) == 0 then
+					local vehicle = GetVehiclePedIsIn(PlayerPed, false)
+					if GetPedInVehicleSeat(vehicle, -1) == PlayerPed then
+						local class = GetVehicleClass(vehicle)
+						
+						if class ~= 15 or 16 or 21 or 13 then
+							local whatToFuckThemWith = fuckDrunkDriver()
+							TaskVehicleTempAction(PlayerPed, vehicle, whatToFuckThemWith.interaction, whatToFuckThemWith.time) 
+						end
+					end
+
+				end
+				
+			end
+
+		end)
+
+	end
+
+end)
+
+
+--Five Minutes of drunk (does not stack)
+function timer()
+	local timer = 300
+	Citizen.CreateThread( function()
+		if not timing then 
+			timing = true
+			while timer ~= 0 do
+				Wait(5000) --- update timer every 5 seconds
+				timer = timer - 5
+				if timer == 0 then
+					Sober()
+					return
+				end
+			end
+		end
+	end)
+end
+
+-- Return to reality
+function Sober()
+
+	Citizen.CreateThread(function()
+		local playerPed = PlayerPedId()
+		level = -1
+		timing = false
+		drunk = false
+		drunkDriving = false
+		ClearTimecycleModifier()
+		ResetScenarioTypesEnabled()
+		ResetPedMovementClipset(playerPed, 0)
+		SetPedIsDrunk(playerPed, false)
+		SetPedMotionBlur(playerPed, false)
+		ClearPedSecondaryTask(playerPed)
+		ShakeGameplayCam("DRUNK_SHAKE", 0.0)
+
+	end)
+end
+
+
+local drunkDriving 	 		 = false
+local level					 = -1
+local drunk					 = false
+local timing				 = false
+
+
 RegisterNetEvent('consumables:client:DrinkAlcohol', function(itemName)
-    TriggerEvent('animations:client:EmoteCommandStart', {"drink"})
+    TriggerEvent('animations:client:EmoteCommandStart', {"beer"})
     QBCore.Functions.Progressbar("snort_coke", "Drinking liquor..", math.random(3000, 6000), false, true, {
         disableMovement = false,
         disableCarMovement = false,
@@ -261,18 +423,23 @@ RegisterNetEvent('consumables:client:DrinkAlcohol', function(itemName)
     }, {}, {}, {}, function() -- Done
         TriggerEvent('animations:client:EmoteCommandStart', {"c"})
         TriggerEvent("inventory:client:ItemBox", QBCore.Shared.Items[itemName], "remove")
-        TriggerServerEvent("QBCore:Server:RemoveItem", itemName, 1)
-        TriggerServerEvent("QBCore:Server:SetMetaData", "thirst", QBCore.Functions.GetPlayerData().metadata["thirst"] + ConsumeablesAlcohol[itemName])
-        alcoholCount = alcoholCount + 1
-        if alcoholCount > 1 and alcoholCount < 4 then
+        TriggerServerEvent("consumables:server:drinkAlcohol", itemName)
+        TriggerServerEvent("consumables:server:addThirst", QBCore.Functions.GetPlayerData().metadata["thirst"] + ConsumeablesAlcohol[itemName])
+        alcoholCount += 1
+        if alcoholCount == 1 and alcoholCount < 2 then
+            Buzzed()
             TriggerEvent("evidence:client:SetStatus", "alcohol", 200)
+        elseif alcoholCount > 1 and alcoholCount < 4 then
+            TriggerEvent("evidence:client:SetStatus", "alcohol", 200)
+            Drunk()
         elseif alcoholCount >= 4 then
+            Hammered()
             TriggerEvent("evidence:client:SetStatus", "heavyalcohol", 200)
         end
 
     end, function() -- Cancel
         TriggerEvent('animations:client:EmoteCommandStart', {"c"})
-        QBCore.Functions.Notify("Cancelled..", "error")
+        -- QBCore.Functions.Notify("Cancelled..", "error")
     end)
 end)
 

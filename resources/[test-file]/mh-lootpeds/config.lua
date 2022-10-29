@@ -467,12 +467,12 @@ Config.PedModels = {
 -- Placeholder (Don't change this)
 Config.Items = {  
     ['Basic'] = {
-        [1] = {
-            name = "ree",
-        },
-        [2] = {
-            name = "ree",
-        },
+        -- [1] = {
+        --     name = "ree",
+        -- },
+        -- [2] = {
+        --     name = "ree",
+        -- },
     },
     ['Ammo'] = {
         [1] = {
@@ -480,9 +480,9 @@ Config.Items = {
         },
     },
     ['NormalWeapons'] = {
-        [1] = {
-            name = "ree",
-        },
+        -- [1] = {
+        --     name = "ree",
+        -- },
     },
     ['HeavyWeapons'] = {
         [1] = {

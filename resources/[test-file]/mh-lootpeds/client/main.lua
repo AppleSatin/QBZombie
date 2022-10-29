@@ -30,6 +30,9 @@ local function Anim()
     local ped = PlayerPedId()
     LoadAnim('amb@medic@standing@kneel@idle_a')
     TaskPlayAnim(ped, 'amb@medic@standing@kneel@idle_a', 'idle_a', 6.0, -6.0, -1, 47, 0, 0, 0, 0)
+    -- Wait(500)
+    -- LoadAnim('anim@mp_fm_event@intro')
+    -- TaskPlayAnim(ped, 'anim@mp_fm_event@intro', 'beast_transform', 6.0, -6.0, -1, 47, 0, 0, 0, 0)
     FreezeEntityPosition(ped, true)
 
 end
@@ -112,9 +115,9 @@ if Config.UseTarget then
             {
                 type = "client",
                 event = "qb-lootpeds:client:takeloot",
-                icon = 'fas fa-skull-crossbones',
+                icon = 'fa-thin fa-circle',
                 label = Lang:t('target.label'),
-                targeticon = 'fas fa-skull-crossbones',
+                targeticon = 'fa-thin fa-circle',
                 action = function(entity)
                     if not IsEnable then return false end 
                     if IsPedAPlayer(entity) then return false end

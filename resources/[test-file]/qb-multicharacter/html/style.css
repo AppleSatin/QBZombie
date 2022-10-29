@@ -53,11 +53,12 @@
     position: absolute;
     width: 22%;
     height: auto;
-    left: 72%;
-    top: -40%;
+    left: 40%;
+    top: -38%;
     overflow: visible !important;
-    /*background-color: rgb(23 23 23 / 80%);*/
-    padding: 30px;
+    background-color: rgb(23 23 23 / 100%);
+    padding: 39px;
+    padding-top: 4%;
 }
 
 
@@ -65,10 +66,10 @@
     position: absolute;
     margin-bottom: 25px;
     background-color: #000000a9;
-    top: -20px;
-    width: 88%;
+    top: 21px;
+    width: 84%;
     height: 8%;
-    right: 65;
+    right: 41px;
 }
 
 .character-list-header > p {

@@ -73,18 +73,20 @@ end)
 RegisterNetEvent('qb-multicharacter:client:chooseChar', function()
     SetNuiFocus(false, false)
     DoScreenFadeOut(10)
-    Wait(1000)
-    local interior = GetInteriorAtCoords(Config.Interior.x, Config.Interior.y, Config.Interior.z - 18.9)
-    LoadInterior(interior)
-    while not IsInteriorReady(interior) do
-        Wait(1000)
-    end
+    -- Wait(1000)
+
+    -- local interior = GetInteriorAtCoords(Config.Interior.x, Config.Interior.y, Config.Interior.z - 18.9)
+    -- LoadInterior(interior)
+    -- while not IsInteriorReady(interior) do
+    --     Wait(1000)
+    -- end
     FreezeEntityPosition(PlayerPedId(), true)
     SetEntityCoords(PlayerPedId(), Config.HiddenCoords.x, Config.HiddenCoords.y, Config.HiddenCoords.z)
-    Wait(1500)
+  --  Wait(1500)
     ShutdownLoadingScreen()
     ShutdownLoadingScreenNui()
     openCharMenu(true)
+    DoScreenFadeIn(10)
 end)
 
 -- NUI Callbacks
