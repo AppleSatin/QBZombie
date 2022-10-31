@@ -217,18 +217,18 @@ end
 
 RegisterNetEvent('qb-houses:client:decorate', function()
 	Wait(500)
-	if IsInside then
-		if HasHouseKey then
+	--if IsInside then
+	--	if HasHouseKey then
 			if not DecoMode then
 				EnableEditMode()
 				openDecorateUI()
 			end
-		else
-			QBCore.Functions.Notify(Lang:t("error.no_keys"), "error")
-		end
-	else
-		QBCore.Functions.Notify(Lang:t("error.not_in_house"), "error")
-	end
+	-- 	else
+	-- 		QBCore.Functions.Notify(Lang:t("error.no_keys"), "error")
+	-- 	end
+	-- else
+	-- 	QBCore.Functions.Notify(Lang:t("error.not_in_house"), "error")
+	-- end
 end)
 
 -- NUI Callbacks

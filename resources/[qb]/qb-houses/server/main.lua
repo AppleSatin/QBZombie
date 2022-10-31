@@ -56,7 +56,7 @@ end)
 
 -- Commands
 
-QBCore.Commands.Add("decorate", Lang:t("info.decorate_interior"), {}, false, function(source)
+QBCore.Commands.Add("basebuild", Lang:t("info.decorate_interior"), {}, false, function(source)
     local src = source
     TriggerClientEvent("qb-houses:client:decorate", src)
 end)
@@ -486,6 +486,12 @@ QBCore.Functions.CreateCallback('qb-phone:server:TransferCid', function(_, cb, N
         cb(false)
     end
 end)
+
+
+-- QBCore.Commands.Add("basebuild", "", {}, false, function(source)
+--     local src = source
+--     openDecorateUI()
+-- end)
 
 QBCore.Functions.CreateCallback('qb-houses:server:getHouseDecorations', function(_, cb, house)
     local retval = nil

@@ -1,3 +1,5 @@
+local QBCore = exports['qb-core']:GetCoreObject()
+
 local Shooting = false
 local Running = false
 
@@ -23,6 +25,71 @@ DecorRegister('RegisterZombie', 2)
 AddRelationshipGroup('ZOMBIE')
 SetRelationshipBetweenGroups(0, GetHashKey('ZOMBIE'), GetHashKey('PLAYER'))
 SetRelationshipBetweenGroups(5, GetHashKey('PLAYER'), GetHashKey('ZOMBIE'))
+
+local Ill = false
+
+local function GetIll()
+	local ped = PlayerPedId()
+	Ill = true
+	print("get fucked")
+	RequestAnimSet('move_m@drunk@verydrunk')
+	SetPedMovementClipset(ped, 'move_m@drunk@verydrunk', 1.0)
+end
+
+function RemoveIll()
+	local ped = PlayerPedId()
+	print("huhhhhhh")
+	Ill = false 
+	RequestAnimSet('move_m@casual@b')
+	SetPedMovementClipset(ped, 'move_m@casual@b', 1.0)
+	print("Removed being Ill")
+	QBCore.Functions.Notify('You are no longer ill', 'success', 2500)
+end
+
+RegisterNetEvent("apple:removedill", function()
+	QBCore.Functions.Progressbar("enject_here", "Ejecting Syring..", 4500, false, true, {
+        disableMovement = true,
+        disableCarMovement = false,
+        disableMouse = false,
+        disableCombat = true,
+    }, {
+        animDict = "mini@sprunk",
+        anim = "plyr_buy_drink_pt1",
+        flags = 49,
+    }, {}, {}, function() -- Done
+	print("here 3")
+	RemoveIll()
+	StopScreenEffect("DrugsTrevorClownsFight")
+	StopScreenEffect("DrugsTrevorClownsFightIn")
+	StopScreenEffect("DrugsTrevorClownsFightOut")
+	end)
+end)
+
+Citizen.CreateThread(function()
+
+	while true do
+	
+		local chansatthosta = math.random(1000, 10000)
+	
+		Citizen.Wait(chansatthosta)
+	
+		if Ill then --Checks if ill
+	
+			--Cough animation
+		   RequestAnimDict("timetable@gardener@smoking_joint")
+			 while not HasAnimDictLoaded("timetable@gardener@smoking_joint") do
+				Citizen.Wait(100)
+			 end
+	 
+				TaskPlayAnim(GetPlayerPed(-1), "timetable@gardener@smoking_joint", "idle_cough", 8.0, 8.0, -1, 50, 0, false, false, false)
+				Citizen.Wait(3000)
+				ClearPedSecondaryTask(GetPlayerPed(-1))
+				SetEntityHealth(PlayerPedId(), GetEntityHealth(PlayerPedId())-1)
+			    QBCore.Functions.Notify('You have been bit by a zombie and is now sick..', 'error', 2500)
+			end
+		end
+	end)
+
 
 function IsPlayerShooting()
     return Shooting
@@ -79,33 +146,33 @@ Citizen.CreateThread(function()-- Will only work in it's own while loop
     end
 end)
 
-function HitEffect()
-    local startStamina = 8
-    HitEffect2()
-    SetRunSprintMultiplierForPlayer(PlayerId(), 1.49)
-    while startStamina > 0 do
-        Wait(1000)
-        if math.random(5, 100) < 10 then
-            RestorePlayerStamina(PlayerId(), 1.0)
-        end
-        startStamina = startStamina - 1
-        if math.random(5, 100) < 51 then
-            HitEffect2()
-        end
-    end
-    startStamina = 0
-    SetRunSprintMultiplierForPlayer(PlayerId(), 1.0)
+local CoolDown = false
+
+local function CoolDown()
+	CoolDown = true
+	Wait(1000) -- Time in MS = 1Sec
+	CoolDown = false
 end
 
-function HitEffect2()
+RegisterNetEvent("apple:effect", function(source)
+	if not CoolDown then 
+		print("done")
+		HitEffect()
+		CoolDown()
+	else
+		print("cant right now cool down")
+	end
+end)
+
+
+function HitEffect()
     StartScreenEffect("DrugsTrevorClownsFightIn", 3.0, 0)
-    Wait(3000)
     StartScreenEffect("DrugsTrevorClownsFight", 3.0, 0)
-    Wait(3000)
 	StartScreenEffect("DrugsTrevorClownsFightOut", 3.0, 0)
-	StopScreenEffect("DrugsTrevorClownsFight")
-	StopScreenEffect("DrugsTrevorClownsFightIn")
-	StopScreenEffect("DrugsTrevorClownsFightOut")
+--	Wait(10000)
+	-- StopScreenEffect("DrugsTrevorClownsFight")
+	-- StopScreenEffect("DrugsTrevorClownsFightIn")
+	-- StopScreenEffect("DrugsTrevorClownsFightOut")
 end
 
 Citizen.CreateThread(function()
@@ -191,7 +258,7 @@ Citizen.CreateThread(function()
 
 	           	if IsPlayerShooting() or IsPedInAnyVehicle() or IsPedDoingDriveby() then
 	                DistanceTarget = 120.0
-					print("spawned here")
+					--print("spawned here")
 	            elseif IsPlayerRunning() then
 	                DistanceTarget = 50.0
 	            else
@@ -217,6 +284,10 @@ Citizen.CreateThread(function()
 	                        TaskPlayAnim(Zombie, 'melee@unarmed@streamed_core_fps', 'ground_attack_0_psycho', 8.0, 1.0, -1, 48, 0.001, false, false, false)
 
 	                        ApplyDamageToPed(PlayerPedId(), 1, false)
+							-- HitEffect()
+							--TriggerEvent("apple:effect")
+							print("hit by zombie")
+							GetIll()
 							HitEffect()
 	                    end
 	                end
