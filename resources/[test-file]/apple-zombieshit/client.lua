@@ -46,6 +46,33 @@ function RemoveIll()
 	QBCore.Functions.Notify('You are no longer ill', 'success', 2500)
 end
 
+local Hitsound = false
+
+
+function HitSoundEffect()
+	if not Hitsound then
+		TriggerServerEvent("InteractSound_SV:PlayOnSource", "zombiehitsound", 1)
+		Hitsound = true
+	else 
+		-- Wait(1000)
+		 Hitsound = false
+	end
+end
+
+
+local LocalZombieSound = false
+
+
+function LocalSoundEffect()
+	if not LocalZombieSound then
+		TriggerServerEvent("InteractSound_SV:PlayOnSource", "zombielocalsound", 0.2)
+	--	LocalZombieSound = true
+	else 
+		-- Wait(10000)
+		 LocalZombieSound = false
+	end
+end
+
 RegisterNetEvent("apple:removedill", function()
 	QBCore.Functions.Progressbar("enject_here", "Ejecting Syring..", 4500, false, true, {
         disableMovement = true,
@@ -229,6 +256,7 @@ Citizen.CreateThread(function()
 	                while not HasAnimSetLoaded('move_m@drunk@verydrunk') do
 	                    Citizen.Wait(0)
 	                end
+					
 	                SetPedMovementClipset(Zombie, 'move_m@drunk@verydrunk', 1.0)
 
 	                SetPedConfigFlag(Zombie, 100, false)
@@ -263,6 +291,9 @@ Citizen.CreateThread(function()
 	                DistanceTarget = 50.0
 	            else
 	                DistanceTarget = 20.0
+					 LocalSoundEffect()
+					print("zombie noise spawned at this distance")
+					print(Distance)
 	            end
 
 	            if Distance <= DistanceTarget and not IsPedInAnyVehicle(PlayerPedId(), false) then
@@ -282,13 +313,14 @@ Citizen.CreateThread(function()
 	                        end
 
 	                        TaskPlayAnim(Zombie, 'melee@unarmed@streamed_core_fps', 'ground_attack_0_psycho', 8.0, 1.0, -1, 48, 0.001, false, false, false)
-
 	                        ApplyDamageToPed(PlayerPedId(), 1, false)
 							-- HitEffect()
 							--TriggerEvent("apple:effect")
 							print("hit by zombie")
 							GetIll()
 							HitEffect()
+							 HitSoundEffect()
+							--TriggerServerEvent("InteractSound_SV:PlayOnSource", "zombiehitsound", 1)
 	                    end
 	                end
 	            end
