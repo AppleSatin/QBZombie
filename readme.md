@@ -1,0 +1,1 @@
+This is unmaintained and no support is given for quistions feel free to dm me # ! 𝓐ｐ𝓟𝕃€#1240
