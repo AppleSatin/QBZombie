@@ -289,9 +289,9 @@ RegisterNetEvent('qb-houses:server:RingDoor', function(house)
     TriggerClientEvent('qb-houses:client:RingDoor', -1, src, house)
 end)
 
-RegisterNetEvent('qb-houses:server:savedecorations', function(house, decorations)
-    MySQL.update('UPDATE player_houses SET decorations = ? WHERE house = ?', {json.encode(decorations), house})
-    TriggerClientEvent("qb-houses:server:sethousedecorations", -1, house, decorations)
+RegisterNetEvent('qb-houses:server:savedecorations', function(cid, decorations)
+    MySQL.update('UPDATE player_bases SET decorations = ? WHERE citizenid = ?', {json.encode(decorations), cid})
+    TriggerClientEvent("qb-houses:server:sethousedecorations", -1, cid, decorations)
 end)
 
 RegisterNetEvent('qb-houses:server:LogoutLocation', function()

@@ -55,7 +55,7 @@ local function EnableEditMode()
 end
 
 local function SaveDecorations()
-	if ClosestHouse then
+	if cid then
 		if SelectedObj then
 			if SelObjId ~= 0 then
 				ObjectList[SelObjId] = {hashname = SelObjHash, x = SelObjPos.x, y = SelObjPos.y, z = SelObjPos.z, rotx = SelObjRot.x, roty = SelObjRot.y, rotz = SelObjRot.z, object = SelectedObj, objectId = SelObjId}
@@ -71,7 +71,7 @@ local function SaveDecorations()
 				DeleteObject(v.object)
 			end
 		end
-		TriggerServerEvent("qb-houses:server:savedecorations", ClosestHouse, ObjectList)
+		TriggerServerEvent("qb-houses:server:savedecorations", cid, ObjectList)
 	end
 end
 
